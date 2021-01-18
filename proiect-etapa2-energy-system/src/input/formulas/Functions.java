@@ -1,9 +1,6 @@
 package input.formulas;
 
-import data.Consumers;
-import data.ContractFactory;
-import data.Distributors;
-import data.Contract;
+import data.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -294,7 +291,7 @@ public final class Functions {
         }
     }
 
-         public void print(final ArrayList<Distributors> distributors, final ArrayList<Consumers> consumers) {
+         public void print(final ArrayList<Distributors> distributors, final ArrayList<Consumers> consumers, final ArrayList<Producers> producers) {
          int i;
          for (i = 0; i < consumers.size(); i++) {
              System.out.print("Consumer" + " id " + consumers.get(i).getId() + " budget " + consumers.get(i).getBudget() +
@@ -304,8 +301,18 @@ public final class Functions {
          for (i = 0; i < distributors.size(); i++) {
              System.out.print("Distributor" + " id " + distributors.get(i).getId() + " budget  " + distributors.get(i).getBudget() +
                      " contracte  : " + distributors.get(i).getContracts() + " pret " + distributors.get(i).getPrice() +
-                     " nr of consumers " + distributors.get(i).getNumberOfConsumers() + "\n");
+                     " nr of consumers " + distributors.get(i).getNumberOfConsumers() + " producatori alesi " + distributors.get(i).getIdProducer() + "\n"+
+                     " energy needed " + distributors.get(i).getEnergyNeededkW() + " pretul productiei "+
+                     distributors.get(i).getProductionCost() + "\n");
          }
+
+             for (i = 0; i < producers.size(); i++) {
+                 System.out.print("Producer" + " id " + producers.get(i).getId() + " energie " + producers.get(i).getEnergyType() +
+                         " max energie oferita " + producers.get(i).getEnergyPerDistributor() + " pret " + producers.get(i).getPriceKW() +
+                         "   max dist  " + producers.get(i).getMaxDistributors() + " MonthlyStats  " + producers.get(i).getMonthlyStats()+
+                         " nr dist " + producers.get(i).getNrDistributors() +
+                         "\n");
+             }
      }
 
     /**

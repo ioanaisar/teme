@@ -1,26 +1,29 @@
 package input.initialData;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import strategies.EnergyChoiceStrategyType;
 
 public final class InputDistributors {
     private int id;
     private int contractLength;
     private int initialBudget;
     private int initialInfrastructureCost;
-    private int initialProductionCost;
+    private int energyNeededKW;
+    private EnergyChoiceStrategyType producerStrategy;
 
     public InputDistributors(@JsonProperty("id") final int id,
                              @JsonProperty("contractLength") final int contractLength,
                              @JsonProperty("initialBudget") final int initialBudget,
                              @JsonProperty("initialInfrastructureCost")
                              final int initialInfrastructureCost,
-                             @JsonProperty("initialProductionCost")
-                             final int initialProductionCost) {
+                             @JsonProperty("energyNeededKW") final int energyNeededKW,
+                            @JsonProperty("producerStrategy") final EnergyChoiceStrategyType producerStrategy ) {
         this.id = id;
         this.contractLength = contractLength;
         this.initialBudget = initialBudget;
         this.initialInfrastructureCost = initialInfrastructureCost;
-        this.initialProductionCost = initialProductionCost;
+        this.energyNeededKW = energyNeededKW;
+        this.producerStrategy = producerStrategy;
     }
 
     public int getId() {
@@ -55,11 +58,19 @@ public final class InputDistributors {
         this.initialInfrastructureCost = initialInfrastructureCost;
     }
 
-    public int getInitialProductionCost() {
-        return initialProductionCost;
+    public int getEnergyNeededKW() {
+        return energyNeededKW;
     }
 
-    public void setInitialProductionCost(final int initialProductionCost) {
-        this.initialProductionCost = initialProductionCost;
+    public void setEnergyNeededKW(int energyNeededKW) {
+        this.energyNeededKW = energyNeededKW;
+    }
+
+    public EnergyChoiceStrategyType getProducerStrategy() {
+        return producerStrategy;
+    }
+
+    public void setProducerStrategy(EnergyChoiceStrategyType producerStrategy) {
+        this.producerStrategy = producerStrategy;
     }
 }

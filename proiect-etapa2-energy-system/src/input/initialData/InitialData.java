@@ -8,12 +8,15 @@ import java.util.List;
 public final class InitialData {
     private List<InputConsumers> consumers;
     private List<InputDistributors> distributors;
+    private List<InputProducers> producers;
 
 
     public InitialData(@JsonProperty("consumers") final List<InputConsumers> consumers,
-                       @JsonProperty("distributors") final List<InputDistributors> distributors) {
+                       @JsonProperty("distributors") final List<InputDistributors> distributors,
+                       @JsonProperty("producers") final List<InputProducers> producers) {
         this.consumers = consumers;
         this.distributors = distributors;
+        this.producers = producers;
     }
 
     public List<InputConsumers> getConsumers() {
@@ -32,4 +35,11 @@ public final class InitialData {
         this.distributors = distributors;
     }
 
+    public List<InputProducers> getProducers() {
+        return producers;
+    }
+
+    public void setProducers(List<InputProducers> producers) {
+        this.producers = producers;
+    }
 }

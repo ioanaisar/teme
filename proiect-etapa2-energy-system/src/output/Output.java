@@ -14,11 +14,14 @@ public final class Output {
 
     private List<OutputConsumers> consumers;
     private List<OutputDistributors> distributors;
+    private List<OutputProducers> producers;
 
     public Output(final List<OutputConsumers> consumers,
-                  final List<OutputDistributors> distributors) {
+                  final List<OutputDistributors> distributors,
+                  final List<OutputProducers> producers) {
         this.consumers = consumers;
         this.distributors = distributors;
+        this.producers = producers;
     }
 
     @JsonProperty(value = "consumers")
@@ -37,5 +40,14 @@ public final class Output {
 
     public void setDistributors(final List<OutputDistributors> distributors) {
         this.distributors = distributors;
+    }
+
+    @JsonProperty(value = "energyProducers")
+    public List<OutputProducers> getProducers() {
+        return producers;
+    }
+
+    public void setProducers(List<OutputProducers> producers) {
+        this.producers = producers;
     }
 }

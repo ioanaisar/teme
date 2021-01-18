@@ -5,18 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * informatia despre schimbarile costurilor unui distribuitor
  */
-public final class CostsChanges {
+public final class DistributorChanges {
     private int id;
     private int infrastructureCost;
-    private int productionCost;
 
-
-    public CostsChanges(@JsonProperty("id") final int id,
-                        @JsonProperty("infrastructureCost") final int infrastructureCost,
-                        @JsonProperty("productionCost") final int productionCost) {
+    public DistributorChanges(@JsonProperty("id") final int id,
+                              @JsonProperty("infrastructureCost") final int infrastructureCost) {
         this.id = id;
         this.infrastructureCost = infrastructureCost;
-        this.productionCost = productionCost;
     }
 
     public int getId() {
@@ -27,9 +23,6 @@ public final class CostsChanges {
         return infrastructureCost;
     }
 
-    public int getProductionCost() {
-        return productionCost;
-    }
 
     public void setId(final int id) {
         this.id = id;
@@ -39,8 +32,4 @@ public final class CostsChanges {
         this.infrastructureCost = infrastructureCost;
     }
 
-
-    public void setProductionCost(final int productionCost) {
-        this.productionCost = productionCost;
-    }
 }
