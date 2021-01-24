@@ -1,6 +1,10 @@
 package input.formulas;
 
-import data.*;
+import data.Distributors;
+import data.Consumers;
+import data.Contract;
+import data.ContractFactory;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -222,18 +226,34 @@ public final class Functions {
                     reduceNrMonths(distributors, consumers.get(i),
                             consumers.get(i).getIdDistributor());
 
+                    if (consumers.get(i).getDurationofContract() == 0) {
+                        consumers.get(i).setNewDistributors(1);
+                    } else {
+                        consumers.get(i).setNewDistributors(0);
+                    }
+
                 } else if (consumers.get(i).getBankrupt() == 1) {
+
                     penalization = consumers.get(i).getPenalization()
                             + consumers.get(i).getPrice();
 
-                    if (penalization > consumers.get(i).getBudget()) {
+                    if (penalization > consumers.get(i).getBudget()
+                            && consumers.get(i).getNewDistributors() == 0) {
                         consumers.get(i).setBankrupt(2);
 
                     } else {
-                        budget = consumers.get(i).getBudget() - penalization;
-                        consumers.get(i).setBudget(budget);
-                        consumers.get(i).setInitialBudget(budget);
-                        consumers.get(i).setBankrupt(0);
+                        if (consumers.get(i).getNewDistributors() == 0) {
+                            budget = consumers.get(i).getBudget() - penalization;
+                            consumers.get(i).setBudget(budget);
+                            consumers.get(i).setInitialBudget(budget);
+                            consumers.get(i).setBankrupt(0);
+                        } else {
+                            budget = consumers.get(i).getBudget() - penalization
+                                    + consumers.get(i).getPrice();
+                            consumers.get(i).setBudget(budget);
+                            consumers.get(i).setInitialBudget(budget);
+                            consumers.get(i).setBankrupt(0);
+                        }
                     }
                 }
             }
@@ -290,30 +310,6 @@ public final class Functions {
             }
         }
     }
-
-         public void print(final ArrayList<Distributors> distributors, final ArrayList<Consumers> consumers, final ArrayList<Producers> producers) {
-         int i;
-         for (i = 0; i < consumers.size(); i++) {
-             System.out.print("Consumer" + " id " + consumers.get(i).getId() + " budget " + consumers.get(i).getBudget() +
-                     " durata contract " + consumers.get(i).getDurationofContract() + " este falit " + consumers.get(i).getBankrupt() +
-                     "\n");
-         }
-         for (i = 0; i < distributors.size(); i++) {
-             System.out.print("Distributor" + " id " + distributors.get(i).getId() + " budget  " + distributors.get(i).getBudget() +
-                     " contracte  : " + distributors.get(i).getContracts() + " pret " + distributors.get(i).getPrice() +
-                     " nr of consumers " + distributors.get(i).getNumberOfConsumers() + " producatori alesi " + distributors.get(i).getIdProducer() + "\n"+
-                     " energy needed " + distributors.get(i).getEnergyNeededkW() + " pretul productiei "+
-                     distributors.get(i).getProductionCost() + "\n");
-         }
-
-             for (i = 0; i < producers.size(); i++) {
-                 System.out.print("Producer" + " id " + producers.get(i).getId() + " energie " + producers.get(i).getEnergyType() +
-                         " max energie oferita " + producers.get(i).getEnergyPerDistributor() + " pret " + producers.get(i).getPriceKW() +
-                         "   max dist  " + producers.get(i).getMaxDistributors() + " MonthlyStats  " + producers.get(i).getMonthlyStats()+
-                         " nr dist " + producers.get(i).getNrDistributors() +
-                         "\n");
-             }
-     }
 
     /**
      * metoda va parcurge lista de consumatori si ii va sterge pe cei care

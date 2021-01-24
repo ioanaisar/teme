@@ -5,10 +5,16 @@ import actions.MonthlyUpdates;
 import actions.NewConsumers;
 
 import actions.ProducerChanges;
-import data.*;
+import data.Consumers;
+import data.Producers;
+import data.Distributors;
+import data.Contract;
+import data.ContractFactory;
+import data.OutputContract;
+import data.MonthlyStats;
+
 
 import data.observer.Changes;
-import data.observer.Subject;
 import input.Input;
 import input.formulas.FunctionsChangesProducers;
 import input.initialData.InputConsumers;
@@ -20,7 +26,11 @@ import java.util.List;
 import java.util.HashMap;
 
 import input.initialData.InputProducers;
-import output.*;
+import output.Output;
+import output.OutputMonthlyStats;
+import output.OutputProducers;
+import output.OutputDistributors;
+import output.OutputConsumers;
 
 
 public final class Simulations {
@@ -56,9 +66,9 @@ public final class Simulations {
                     inputDistributors.get(i).getInitialInfrastructureCost(),
                     inputDistributors.get(i).getEnergyNeededKW(),
                     inputDistributors.get(i).getProducerStrategy(), 0,
-                    inputDistributors.get(i).getInitialBudget(), 0,0,
-                    inputDistributors.get(i).getInitialInfrastructureCost(), 0, 0, 0,0);
-                    distributors.add(distributor);
+                    inputDistributors.get(i).getInitialBudget(), 0, 0,
+                    inputDistributors.get(i).getInitialInfrastructureCost(), 0, 0, 0, 0);
+            distributors.add(distributor);
         }
 
         ArrayList<Producers> producers = new ArrayList<>();
@@ -68,8 +78,8 @@ public final class Simulations {
                     inputProducers.get(i).getEnergyType(),
                     inputProducers.get(i).getMaxDistributors(),
                     inputProducers.get(i).getPriceKW(),
-                    inputProducers.get(i).getEnergyPerDistributor(),0);
-                    producers.add(producer);
+                    inputProducers.get(i).getEnergyPerDistributor(), 0);
+            producers.add(producer);
         }
 
 
@@ -99,8 +109,6 @@ public final class Simulations {
         function.paySalaryConsumers(consumers);
         function.payConsumers(distributors, consumers);
         function.budgetDistributor(distributors);
-       // System.out.print(" Runda initiala \n");
-      // function.print(distributors, consumers,producers);
 
     }
 
@@ -115,12 +123,18 @@ public final class Simulations {
         Functions function = new Functions();
         List<MonthlyUpdates> updates = input.getMonthlyUpdates();
         FunctionsChangesProducers changesProducers = new FunctionsChangesProducers();
-        //firstRound(consumers, distributors, producers);
-        changesProducers.setMonthlyStats(input.getNumberOfTurns(),producers);
+
+        // fiecare distribuitor isi alege producatorii
+        changesProducers.setMonthlyStats(input.getNumberOfTurns(), producers);
+
+        // se simuleaza prima runda
         firstRound(consumers, distributors, producers);
+
+        // se creaza un obiect observabil
         Changes subject = new Changes();
 
-        for(j=0;j<distributors.size();j++){
+        // se asigneaza distribuitorii ca observatori ai clasei Changes
+        for (j = 0; j < distributors.size(); j++) {
             subject.attach(distributors.get(j));
         }
 
@@ -144,7 +158,7 @@ public final class Simulations {
                     }
                 }
 
-                // se modifica costul infrastructurii si al productiei unor distributori
+                // se modifica costul infrastructurii unor distributori
                 List<DistributorChanges> changes = updates.get(i).getDistributorChanges();
                 for (j = 0; j < changes.size(); j++) {
                     DistributorChanges change = changes.get(j);
@@ -160,14 +174,18 @@ public final class Simulations {
                 if (!changes.isEmpty()) {
                     function.setData(distributors);
                 }
+
+                // se retin schimbarile aduse producatorilor
                 List<ProducerChanges> changesProducer = updates.get(i).getProducerChanges();
                 for (j = 0; j < changesProducer.size(); j++) {
-                     ProducerChanges change1 = changesProducer.get(j);
+                    ProducerChanges change1 = changesProducer.get(j);
                     for (Producers producers1 : producers) {
                         if (producers1.getId() == change1.getId()) {
                             producers1.setEnergyPerDistributor(change1.getEnergyPerDistributor());
                         }
                     }
+
+                    // se anunta observatorii de schimbarile produse
                     subject.notifyUpdate(change1);
                 }
 
@@ -187,10 +205,8 @@ public final class Simulations {
             function.deleteCosumator(distributors, consumers);
             // se sterg contractele distribuitorilor ajunsi la faliment
             function.distributorIsBankrupt(distributors, consumers);
-            changesProducers.chooseInitialProducers(distributors, producers, i+1);
-
-           //System.out.print("\n Round " + i + "\n");
-            //function.print(distributors, consumers, producers);
+            // distribuitorii ramasi fara producatori isi vor alege altii
+            changesProducers.chooseInitialProducers(distributors, producers, i + 1);
 
         }
     }
@@ -201,7 +217,8 @@ public final class Simulations {
      * clasele pentru scrierea in fisier
      */
     public Output writeOutput(final ArrayList<Consumers> consumers,
-                              final ArrayList<Distributors> distributors, final ArrayList<Producers> producers) {
+                              final ArrayList<Distributors> distributors,
+                              final ArrayList<Producers> producers) {
 
         boolean bankrupt;
         int i;
@@ -241,29 +258,36 @@ public final class Simulations {
             }
 
             OutputDistributors outputDistributors1 = new OutputDistributors(distributors.
-                    get(i).getId(),distributors.get(i).getEnergyNeededkW(), distributors.get(i).getPrice(), distributors.get(i).getBudget(),
+                    get(i).getId(), distributors.get(i).getEnergyNeededkW(),
+                    distributors.get(i).getPrice(), distributors.get(i).getBudget(),
                     distributors.get(i).getProducerStrategy(), bankrupt,
                     outContracts);
             outputDistributors.add(outputDistributors1);
         }
 
+        // copiaza datele despre producatori
         for (i = 0; i < producers.size(); i++) {
 
-            OutputProducers outputProducer = new OutputProducers(producers.get(i).getId(), producers.get(i).getEnergyType(), producers.get(i).getMaxDistributors(),
-                    producers.get(i).getPriceKW(), producers.get(i).getEnergyPerDistributor(), null);
+            OutputProducers outputProducer = new OutputProducers(producers.get(i).getId(),
+                    producers.get(i).getEnergyType(), producers.get(i).getMaxDistributors(),
+                    producers.get(i).getPriceKW(), producers.get(i).getEnergyPerDistributor(),
+                    null);
+
             ArrayList<MonthlyStats> monthlyStats = producers.get(i).getMonthlyStats();
             ArrayList<OutputMonthlyStats> outputMonthlyStats = new ArrayList<>();
+
             if (monthlyStats != null) {
                 for (int j = 1; j < monthlyStats.size(); j++) {
-                    OutputMonthlyStats stat = new OutputMonthlyStats(monthlyStats.get(j).getMonth(), monthlyStats.get(j).getDistributorsIds());
+                    OutputMonthlyStats stat = new OutputMonthlyStats(monthlyStats.get(j).getMonth(),
+                            monthlyStats.get(j).getDistributorsIds());
                     outputMonthlyStats.add(stat);
                 }
 
-                outputProducer.setMonthlyStats(outputMonthlyStats);}
-                outputProducers.add(outputProducer);
+                outputProducer.setMonthlyStats(outputMonthlyStats);
             }
+            outputProducers.add(outputProducer);
+        }
 
-//return null;
         return new Output(outputConsumers, outputDistributors, outputProducers);
     }
 

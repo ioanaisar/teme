@@ -29,11 +29,4 @@ public final class Contract extends ContractEntity {
         this.remainedMonths = remainedMonths;
     }
 
-    @Override
-    public String toString() {
-        return "Contract{" +
-                "id=" + id +
-                ", remainedMonths=" + remainedMonths +
-                '}';
-    }
 }

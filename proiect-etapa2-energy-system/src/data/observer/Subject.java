@@ -2,11 +2,24 @@ package data.observer;
 
 import actions.ProducerChanges;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
+/**
+ * interfata pentru Observable
+ */
 public interface Subject {
-     public void attach(Observer o);
-    public void dettach(Observer o);
-    public void notifyUpdate(ProducerChanges changes);
+
+    /**
+     * adauga un observator
+     */
+    void attach(Observer o);
+
+    /**
+     * elimina un observator
+     */
+    void dettach(Observer o);
+
+    /**
+     * notifica observatorii despre schimbarile
+     * producatorilor
+     */
+    void notifyUpdate(ProducerChanges changes);
 }

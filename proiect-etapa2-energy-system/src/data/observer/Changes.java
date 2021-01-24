@@ -1,41 +1,64 @@
 package data.observer;
 
 import actions.ProducerChanges;
-import data.Distributors;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
-public class Changes implements Subject {
-    ArrayList<ProducerChanges> changes = new ArrayList<>();
-    ArrayList<Observer> observers = new ArrayList<>();
+/**
+ * clasa ce reprezinta obiectil observabil
+ */
+public final class Changes implements Subject {
+    /**
+     * lista cu schimbarile ptroduse
+     */
+    private ArrayList<ProducerChanges> changes = new ArrayList<>();
+
+    /**
+     * lista cu observatorii
+     */
+    private ArrayList<Observer> observers = new ArrayList<>();
+
+    /**
+     * adauga un observator
+     */
     @Override
-    public void attach(Observer o) {
-            observers.add(o);
+    public void attach(final Observer o) {
+        observers.add(o);
     }
 
+    /**
+     * sterge un observator
+     */
     @Override
-    public void dettach(Observer o) {
+    public void dettach(final Observer o) {
         observers.remove(o);
     }
 
+    /**
+     * se anunta observatorii despre schimbarile produse
+     * se adauga noua schimbare in lista
+     */
     @Override
-    public void notifyUpdate(ProducerChanges change) {
+    public void notifyUpdate(final ProducerChanges change) {
         changes.add(change);
-        for(Observer o : observers){
+        for (Observer o : observers) {
             o.update(change);
         }
     }
-    //ArrayList<Distributors> distributors = new ArrayList<>();
 
-
-   /* @Override
-    protected synchronized void setChanged() {
-        super.setChanged();
+    public ArrayList<ProducerChanges> getChanges() {
+        return changes;
     }
 
-    @Override
-    public void notifyObservers() {
-        super.notifyObservers();
-    }*/
+    public void setChanges(ArrayList<ProducerChanges> changes) {
+        this.changes = changes;
+    }
+
+    public ArrayList<Observer> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(ArrayList<Observer> observers) {
+        this.observers = observers;
+    }
 }

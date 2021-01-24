@@ -1,7 +1,7 @@
 package input.initialData;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import strategies.EnergyChoiceStrategyType;
+import input.formulas.strategies.EnergyChoiceStrategyType;
 
 public final class InputDistributors {
     private int id;
@@ -17,7 +17,8 @@ public final class InputDistributors {
                              @JsonProperty("initialInfrastructureCost")
                              final int initialInfrastructureCost,
                              @JsonProperty("energyNeededKW") final int energyNeededKW,
-                            @JsonProperty("producerStrategy") final EnergyChoiceStrategyType producerStrategy ) {
+                             @JsonProperty("producerStrategy")
+                             final EnergyChoiceStrategyType producerStrategy) {
         this.id = id;
         this.contractLength = contractLength;
         this.initialBudget = initialBudget;

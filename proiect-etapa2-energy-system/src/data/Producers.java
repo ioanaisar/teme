@@ -2,13 +2,44 @@ package data;
 
 import java.util.ArrayList;
 
+/**
+ * informatia pentru un producator
+ */
 public final class Producers {
+
+    /**
+     * id-ul unui producator
+     */
     private int id;
+
+    /**
+     * tipul energiei oferite
+     */
     private String energyType;
+
+    /**
+     * numarul maxim e distribuitori permis
+     */
     private int maxDistributors;
+
+    /**
+     * pretul unei KW
+     */
     private double priceKW;
+
+    /**
+     * energia oferita unui distribuitor
+     */
     private int energyPerDistributor;
+
+    /**
+     * lista cu statisticile lunare
+     */
     private ArrayList<MonthlyStats> monthlyStats;
+
+    /**
+     * numarul curent al distribuitorilor
+     */
     private int nrDistributors;
 
     public Producers(final int id,

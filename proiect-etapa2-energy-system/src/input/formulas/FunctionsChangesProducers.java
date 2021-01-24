@@ -3,14 +3,22 @@ package input.formulas;
 import data.Distributors;
 import data.MonthlyStats;
 import data.Producers;
-import strategies.ChoiceStrategy;
-import strategies.EnergyStrategy;
+import input.formulas.strategies.ChoiceStrategy;
+import input.formulas.strategies.EnergyStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FunctionsChangesProducers {
-    public void setMonthlyStats(int nrRound, ArrayList<Producers> producers) {
+/**
+ * clasa contine metode pentru actualizarea relatiilor intre producatori
+ * si distribuitori
+ */
+public final class FunctionsChangesProducers {
+
+    /**
+     * metoda seteaza statisticile lunare la inceputul simularii
+     */
+    public void setMonthlyStats(final int nrRound, final ArrayList<Producers> producers) {
         int i, j;
 
         for (i = 0; i < producers.size(); i++) {
@@ -25,8 +33,15 @@ public class FunctionsChangesProducers {
         }
     }
 
-    public void chooseInitialProducers(ArrayList<Distributors> distributors, ArrayList<Producers> producers, int month) {
+    /**
+     * metoda va sterge listele distribuitorilor cu producatorii, in cazul in care trebuie
+     * realesi
+     * metoda va alege noii producatori daca este cazul
+     */
+    public void chooseInitialProducers(final ArrayList<Distributors> distributors,
+                                       final ArrayList<Producers> producers, final int month) {
         int i, j, k, sum;
+
         List<Producers> sortedProducers;
         ChoiceStrategy energyChooseStrategy = new ChoiceStrategy();
         GetFormulaStrategy strategy = GetFormulaStrategy.getInstance();
@@ -35,10 +50,14 @@ public class FunctionsChangesProducers {
         for (i = 0; i < distributors.size(); i++) {
             if (distributors.get(i).getHasProducer() == 0) {
 
+                // se scade numarul distribuitorilor ai unui producator daca anumiti
+                // distribuitori isi vor realege producatorii
                 if (distributors.get(i).getIdProducer() != null) {
                     for (j = 0; j < distributors.get(i).getIdProducer().size(); j++) {
                         for (k = 0; k < producers.size(); k++) {
-                            if (producers.get(k).getId() == distributors.get(i).getIdProducer().get(j)) {
+                            if (producers.get(k).getId() == distributors.get(i).
+                                    getIdProducer().get(j)) {
+
                                 int nr = producers.get(k).getNrDistributors();
                                 nr--;
                                 producers.get(k).setNrDistributors(nr);
@@ -46,28 +65,44 @@ public class FunctionsChangesProducers {
                         }
                     }
                 }
+
+                // distribuitorul ramas fara producatori isi reinitializeaza lista cu id-uri
                 distributors.get(i).setIdProducer(new ArrayList<>());
-                EnergyStrategy energyStrategy = energyChooseStrategy.getStrategy(distributors.get(i).getProducerStrategy());
+
+                // se alege strategia utilizata
+                EnergyStrategy energyStrategy = energyChooseStrategy.
+                        getStrategy(distributors.get(i).getProducerStrategy());
+
+                // in functie de strategie se calculeaza o lista ordonata
+                // cu producatorii pe care ii poate alege
                 sortedProducers = energyStrategy.choseStrategy(producers);
-                /*System.out.print(" \nalege "  + distributors.get(i).getId() + " \n");
-                for(j=0;j< sortedProducers.size();j++){
-                    System.out.print(" id " + sortedProducers.get(j).getId());
-                }
-                System.out.print(" \n\n" );
-*/
+
+                // lista cu costurile consumatorilor alesi
                 ArrayList<Double> costPerKW = new ArrayList<>();
+
+                // lista cu cantitatile de energie oferite
                 ArrayList<Integer> cantity = new ArrayList<>();
+
+                // lista cu id-urile consumatorilor alesi
                 ArrayList<Integer> ids = new ArrayList<>();
                 j = 0;
                 sum = 0;
-                while (sum < distributors.get(i).getEnergyNeededkW() && sortedProducers.size() != 0 && j < sortedProducers.size()) {
-                    // System.out.print(" \n variante  "  + distributors.get(i).getId() + " nr dist " + sortedProducers.get(j).getNrDistributors()+ " \n");
-                    if (sortedProducers.get(j).getMaxDistributors() > sortedProducers.get(j).getNrDistributors()) {
+
+                // se parcurge lista cu producatori pana se atinge cantitatea de energie
+                // nesara acelui distribuitor, se retin preturile, cantitatea de energie
+                // oferita de fiecare producator si id-ul sau
+                while (sum < distributors.get(i).getEnergyNeededkW()
+                        && sortedProducers.size() != 0 && j < sortedProducers.size()) {
+
+                    if (sortedProducers.get(j).getMaxDistributors() > sortedProducers.get(j).
+                            getNrDistributors()) {
+
                         sum += sortedProducers.get(j).getEnergyPerDistributor();
                         costPerKW.add(sortedProducers.get(j).getPriceKW());
                         cantity.add(sortedProducers.get(j).getEnergyPerDistributor());
                         ids.add(sortedProducers.get(j).getId());
 
+                        // se creste numarul de distribuitori ai producatorului ales
                         for (k = 0; k < producers.size(); k++) {
                             if (producers.get(k).getId() == sortedProducers.get(j).getId()) {
                                 int nrDistributors = producers.get(k).getNrDistributors();
@@ -79,18 +114,23 @@ public class FunctionsChangesProducers {
                     j++;
                 }
 
-                distributors.get(i).setProductionCost(formula.getProductionCost(costPerKW, cantity));
+                // se calculeaza si se seteaza noul cost al productiei
+                distributors.get(i).setProductionCost(formula.
+                        getProductionCost(costPerKW, cantity));
                 distributors.get(i).setIdProducer(ids);
                 distributors.get(i).setHasProducer(1);
             }
         }
+
+        // se calculeaza statisticile producatorilor pentru luna respectivaa
         for (i = 0; i < distributors.size(); i++) {
             for (j = 0; j < distributors.get(i).getIdProducer().size(); j++) {
                 for (k = 0; k < producers.size(); k++) {
                     if (producers.get(k).getId() == distributors.get(i).getIdProducer().get(j)) {
                         ArrayList<MonthlyStats> monthlyStats = producers.get(k).getMonthlyStats();
 
-                        ArrayList<Integer> distributorsId = monthlyStats.get(month).getDistributorsIds();
+                        ArrayList<Integer> distributorsId = monthlyStats.get(month).
+                                getDistributorsIds();
                         distributorsId.add(distributors.get(i).getId());
                         monthlyStats.get(month).setDistributorsIds(distributorsId);
                         producers.get(k).setMonthlyStats(monthlyStats);

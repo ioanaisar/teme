@@ -2,11 +2,10 @@ package data;
 
 import actions.ProducerChanges;
 import data.observer.Observer;
-import strategies.EnergyChoiceStrategyType;
+import input.formulas.strategies.EnergyChoiceStrategyType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Observable;
 
 /**
  * informatia despre un distribuitor
@@ -87,9 +86,24 @@ public final class Distributors implements Observer {
      */
     private ArrayList<Integer> idConsumers;
 
+    /**
+     * energia necesara lunar
+     */
     private int energyNeededkW;
+    /**
+     * stategia aleasa
+     */
     private EnergyChoiceStrategyType producerStrategy;
+
+    /**
+     * lista cu id-urile producatorilor care furnizeaza
+     * energia
+     */
     private ArrayList<Integer> idProducer;
+
+    /**
+     * este 0 daca trebuie sa fie ales un nou producator
+     */
     private int hasProducer;
 
 

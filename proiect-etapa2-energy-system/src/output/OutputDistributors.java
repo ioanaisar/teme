@@ -1,7 +1,7 @@
 package output;
 
 import data.OutputContract;
-import strategies.EnergyChoiceStrategyType;
+import input.formulas.strategies.EnergyChoiceStrategyType;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,8 @@ public final class OutputDistributors {
     private boolean isBankrupt;
     private ArrayList<OutputContract> contracts;
 
-    public OutputDistributors(final int id, final int energyNeededKW, final int contractCost, final int budget,
+    public OutputDistributors(final int id, final int energyNeededKW, final int contractCost,
+                              final int budget,
                               final EnergyChoiceStrategyType producerStrategy,
                               final boolean isBankrupt,
                               final ArrayList<OutputContract> contracts) {

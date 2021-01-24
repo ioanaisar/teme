@@ -2,11 +2,34 @@ package input.initialData;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class InputProducers {
+/**
+ * informatia despre un producator
+ */
+public final class InputProducers {
+
+    /**
+     * id-ul producatorului
+     */
     private int id;
+
+    /**
+     * tipul energiei
+     */
     private String energyType;
+
+    /**
+     * numarul maxim de distribuitori permis
+     */
     private int maxDistributors;
+
+    /**
+     * pretul unui KW
+     */
     private double priceKW;
+
+    /**
+     * energia oferita lunar unui distribuitor
+     */
     private int energyPerDistributor;
 
     public InputProducers(@JsonProperty("id") final int id,
@@ -25,7 +48,7 @@ public class InputProducers {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -33,7 +56,7 @@ public class InputProducers {
         return energyType;
     }
 
-    public void setEnergyType(String energyType) {
+    public void setEnergyType(final String energyType) {
         this.energyType = energyType;
     }
 
@@ -41,7 +64,7 @@ public class InputProducers {
         return maxDistributors;
     }
 
-    public void setMaxDistributors(int maxDistributors) {
+    public void setMaxDistributors(final int maxDistributors) {
         this.maxDistributors = maxDistributors;
     }
 
@@ -49,7 +72,7 @@ public class InputProducers {
         return priceKW;
     }
 
-    public void setPriceKW(double priceKW) {
+    public void setPriceKW(final double priceKW) {
         this.priceKW = priceKW;
     }
 
@@ -57,7 +80,7 @@ public class InputProducers {
         return energyPerDistributor;
     }
 
-    public void setEnergyPerDistributor(int energyPersDistributor) {
+    public void setEnergyPerDistributor(final int energyPersDistributor) {
         this.energyPerDistributor = energyPersDistributor;
     }
 }

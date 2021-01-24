@@ -2,11 +2,15 @@ package actions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ProducerChanges {
+/**
+ * informatia despre schimbarile aparute in energia oferita de un producator
+ */
+public final class ProducerChanges {
     private int id;
     private int energyPerDistributor;
 
-    public ProducerChanges(@JsonProperty("id") int id, @JsonProperty("energyPerDistributor") int energyPerDistributor) {
+    public ProducerChanges(@JsonProperty("id") final int id,
+                           @JsonProperty("energyPerDistributor") final int energyPerDistributor) {
         this.id = id;
         this.energyPerDistributor = energyPerDistributor;
     }
@@ -15,7 +19,7 @@ public class ProducerChanges {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -23,15 +27,8 @@ public class ProducerChanges {
         return energyPerDistributor;
     }
 
-    public void setEnergyPerDistributor(int energyPerDistributor) {
+    public void setEnergyPerDistributor(final int energyPerDistributor) {
         this.energyPerDistributor = energyPerDistributor;
     }
 
-    @Override
-    public String toString() {
-        return "ProducerChanges{" +
-                "id=" + id +
-                ", energyPerDistributor=" + energyPerDistributor +
-                '}';
-    }
 }

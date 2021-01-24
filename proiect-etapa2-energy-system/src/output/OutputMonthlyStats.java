@@ -2,11 +2,11 @@ package output;
 
 import java.util.ArrayList;
 
-public class OutputMonthlyStats {
+public final class OutputMonthlyStats {
     private int month;
     private ArrayList<Integer> distributorsIds;
 
-    public OutputMonthlyStats(int month, ArrayList<Integer> distributorsIds) {
+    public OutputMonthlyStats(final int month, final ArrayList<Integer> distributorsIds) {
         this.month = month;
         this.distributorsIds = distributorsIds;
     }
@@ -15,7 +15,7 @@ public class OutputMonthlyStats {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(final int month) {
         this.month = month;
     }
 
@@ -23,7 +23,7 @@ public class OutputMonthlyStats {
         return distributorsIds;
     }
 
-    public void setDistributorsIds(ArrayList<Integer> distributorsIds) {
+    public void setDistributorsIds(final ArrayList<Integer> distributorsIds) {
         this.distributorsIds = distributorsIds;
     }
 

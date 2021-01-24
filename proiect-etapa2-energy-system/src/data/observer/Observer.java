@@ -2,8 +2,12 @@ package data.observer;
 
 import actions.ProducerChanges;
 
-import java.util.ArrayList;
-
+/**
+ * interfata pentru un observator
+ */
 public interface Observer {
-    public void update(ProducerChanges changes);
+    /**
+     * observatorul este anuntat de noile schimbari
+     */
+    void update(ProducerChanges changes);
 }

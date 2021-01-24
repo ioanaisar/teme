@@ -52,6 +52,12 @@ public final class Consumers {
      */
     private int price;
 
+    /**
+     * indica daca consumatorul tocmai si a ales un distribuitor nou
+     */
+    private int newDistributors;
+
+
     public Consumers(final int id, final int initialBudget, final int monthlyIncome,
                      final int budget, final int penalization, final int bankrupt) {
         this.id = id;
@@ -128,5 +134,13 @@ public final class Consumers {
 
     public void setPrice(final int price) {
         this.price = price;
+    }
+
+    public int getNewDistributors() {
+        return newDistributors;
+    }
+
+    public void setNewDistributors(int newDistributors) {
+        this.newDistributors = newDistributors;
     }
 }

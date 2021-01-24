@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * clasa retine 2 liste: una cu noii consumatori si
+ * clasa retine 3 liste: una cu noii consumatori,
  * una cu schimbarile costurilor pentru distribuitori
+ * una cu schimbarile in energia oferita de producatori
  */
 public final class MonthlyUpdates {
     private List<NewConsumers> newConsumers;
@@ -14,9 +15,11 @@ public final class MonthlyUpdates {
     private List<ProducerChanges> producerChanges;
 
     public MonthlyUpdates(@JsonProperty("newConsumers") final List<NewConsumers> newConsumers,
-                          @JsonProperty("distributorChanges") final List<DistributorChanges> distributorChanges,
-                          @JsonProperty("producerChanges") final List<ProducerChanges> producerChanges
-                          ) {
+                          @JsonProperty("distributorChanges")
+                          final List<DistributorChanges> distributorChanges,
+                          @JsonProperty("producerChanges")
+                          final List<ProducerChanges> producerChanges) {
+
         this.newConsumers = newConsumers;
         this.distributorChanges = distributorChanges;
         this.producerChanges = producerChanges;

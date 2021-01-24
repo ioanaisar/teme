@@ -8,9 +8,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public abstract class ContractEntity {
     private int price;
 
-    public ContractEntity(){
+    public ContractEntity() {
 
     }
+
     public ContractEntity(final int price) {
         this.price = price;
     }
